@@ -1,7 +1,9 @@
 
 # platform-status-consul-frontend
 
-This is a placeholder README.md for a new repository
+Frontend half of the platform status application, designed to run in the public zone and test various infrastructure elements.
+
+This service was created to assisted Infra with migrating from AppMesh to Consul.
 
 ### License
 

@@ -5,20 +5,16 @@ ThisBuild / scalaVersion := "3.3.6"
 ThisBuild / scalacOptions += "-Wconf:msg=Flag.*repeatedly:s"
 
 lazy val microservice = Project("platform-status-consul-frontend", file("."))
-  .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
-  .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
+  .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
-    // suppress warnings in generated routes files
-    scalacOptions += "-Wconf:src=routes/.*:s",
-    scalacOptions += "-Wconf:msg=unused import&src=html/.*:s",
-    pipelineStages := Seq(gzip),
+    scalacOptions       += "-Wconf:msg=unused import&src=html/.*:s",
+    scalacOptions       += "-Wconf:src=routes/.*:s"
   )
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(PlayKeys.playDefaultPort := 8469)
 
 lazy val it = project
   .enablePlugins(PlayScala)
-  .dependsOn(microservice % "test->test")
+  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
   .settings(DefaultBuildSettings.itSettings())
-  .settings(libraryDependencies ++= AppDependencies.it)
+  .settings(libraryDependencies ++= AppDependencies.test)

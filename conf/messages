@@ -1,2 +1,5 @@
 service.name = platform-status-consul-frontend
-service.text = This is your new service
+service.homePageUrl = /platform-status-consul
+
+
+url.pattern = https?://[^%#@?]+

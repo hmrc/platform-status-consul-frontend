@@ -1,0 +1,49 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.platformstatusconsulfrontend.models.AuditVolumeRequest
+@import views.html.helper.CSRF
+
+@this(
+  layout: Layout
+)
+
+@(
+  auditVolumeForm: Form[AuditVolumeRequest]
+)(implicit
+  request : RequestHeader,
+  messages: Messages,
+  flash   : Flash
+)
+
+@layout(pageTitle = Some("Hello from platform-status-consul-frontend")) {
+    <h1>@flash.get("success").getOrElse("Audit Volume Test")</h1>
+
+    <hr/>
+    <h3>Audit Volume Test</h3>
+    <p>
+        Fire off a specified number of audit requests asynchronously
+    </p>
+
+    @helper.form(action = uk.gov.hmrc.platformstatusconsulfrontend.controllers.routes.AuditVolumeController.run){
+        @CSRF.formField
+        @helper.inputText(auditVolumeForm("auditType"), Symbol("_label") -> "Audit Type to be used in Datastream messages")
+        @helper.inputText(auditVolumeForm("n"), Symbol("_label") -> "Number of audit messages")
+        <input type="submit" value="Generate">
+    }
+
+    <p><a href="@uk.gov.hmrc.platformstatusconsulfrontend.controllers.routes.StatusController.platformStatus">frontpage</a></p>
+}
