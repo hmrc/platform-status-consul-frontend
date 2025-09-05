@@ -1,5 +1,34 @@
 # microservice specific routes
 
-->         /hmrc-frontend           hmrcfrontend.Routes
-GET        /                        uk.gov.hmrc.platformstatusconsulfrontend.controllers.HelloWorldController.helloWorld
-GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)
+->          /hmrc-frontend                 hmrcfrontend.Routes
+
+GET         /assets/*file                  controllers.Assets.versioned(path = "/public", file: Asset)
+GET         /                              uk.gov.hmrc.platformstatusconsulfrontend.controllers.StatusController.defaultLanding
+GET         /status                        uk.gov.hmrc.platformstatusconsulfrontend.controllers.StatusController.platformStatus
+GET         /noise                         uk.gov.hmrc.platformstatusconsulfrontend.controllers.NoiseController.noise
+POST        /noise                         uk.gov.hmrc.platformstatusconsulfrontend.controllers.NoiseController.createNoise
+
+GET         /kill                          uk.gov.hmrc.platformstatusconsulfrontend.controllers.KillController.kill
+POST        /kill                          uk.gov.hmrc.platformstatusconsulfrontend.controllers.KillController.meteOutDeath
+POST        /leak                          uk.gov.hmrc.platformstatusconsulfrontend.controllers.KillController.leakMemory
+
+GET         /garbage                       uk.gov.hmrc.platformstatusconsulfrontend.controllers.GarbageController.garbage
+
+GET         /code                          uk.gov.hmrc.platformstatusconsulfrontend.controllers.CodeController.code
+POST        /code                          uk.gov.hmrc.platformstatusconsulfrontend.controllers.CodeController.respondWithCode
+
+GET         /measure                       uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.measure
+GET         /measure-header                uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.measureHeader
+POST        /measure-body                  uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.measureBody
+GET         /measure-random-header         uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.randomResponseHeaderOfSize
+GET         /measure-random-body           uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.randomResponseBodyOfSize
+GET         /measure-header-backend        uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.headerOfSizeToBackend
+GET         /measure-body-backend          uk.gov.hmrc.platformstatusconsulfrontend.controllers.MeasureController.bodyOfSizeToBackend
+
+GET         /audit-volume                  uk.gov.hmrc.platformstatusconsulfrontend.controllers.AuditVolumeController.setup
+POST        /audit-volume                  uk.gov.hmrc.platformstatusconsulfrontend.controllers.AuditVolumeController.run
+
+GET         /service-volume                uk.gov.hmrc.platformstatusconsulfrontend.controllers.ServiceVolumeController.setup
+POST        /service-volume                uk.gov.hmrc.platformstatusconsulfrontend.controllers.ServiceVolumeController.run
+
+GET         /denied                        uk.gov.hmrc.platformstatusconsulfrontend.controllers.AccessDeniedController.deny

@@ -1,0 +1,58 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package uk.gov.hmrc.platformstatusconsulfrontend.services
+
+import com.google.inject.Inject
+import javax.inject.Singleton
+import play.api.Logger
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.platformstatusconsulfrontend.connectors.BackendConnector
+import uk.gov.hmrc.platformstatusconsulfrontend.util.MeasureUtil.X_TEST_HEADER_NAME
+
+import scala.concurrent.{ExecutionContext, Future}
+
+@Singleton
+class MeasureService @Inject()(backendConnector: BackendConnector):
+
+  private val logger = Logger(this.getClass)
+
+  def bodyToBackend(
+    content: String
+  )(using
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[String] =
+    backendConnector.measure(content, Seq.empty)
+      .recoverWith:
+        case ex: Exception =>
+          val msg = s"bodyToBackend call to backend service failed"
+          logger.warn(msg, ex)
+          Future.successful(s"$msg: ${ex.getMessage}")
+
+  def headerToBackend(
+    content: String,
+    headerName: String
+  )(using
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[String] =
+    backendConnector.measure("", Seq(headerName -> content, X_TEST_HEADER_NAME -> headerName))
+      .recoverWith:
+        case ex: Exception =>
+          val msg = s"headerToBackend call to backend service failed"
+          logger.warn(msg, ex)
+          Future.successful(s"$msg: ${ex.getMessage}")
