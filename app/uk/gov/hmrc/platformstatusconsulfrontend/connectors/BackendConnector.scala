@@ -26,6 +26,7 @@ import uk.gov.hmrc.platformstatusconsulfrontend.services.StatusChecker.PlatformS
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.Logging
 
 @Singleton
 class BackendConnector @Inject()(
@@ -33,7 +34,7 @@ class BackendConnector @Inject()(
   servicesConfig: ServicesConfig
 )(using
   ec: ExecutionContext
-):
+) extends Logging:
   import HttpReads.Implicits.*
   import DefaultBodyWritables.writeableOf_String
 
@@ -44,6 +45,7 @@ class BackendConnector @Inject()(
     s"${servicesConfig.baseUrl("platform-status-backend")}/platform-status-backend"
 
   def iteration3Status()(using hc: HeaderCarrier): Future[PlatformStatus] =
+    logger.warn(s"Calling backend: $backendBaseUrl")
     http.get(url"$backendBaseUrl/status/iteration3")
       .execute[PlatformStatus]
 
@@ -52,6 +54,7 @@ class BackendConnector @Inject()(
       .execute[PlatformStatus]
 
   def iteration6Status()(using hc: HeaderCarrier): Future[PlatformStatus] =
+    logger.warn(s"Calling backend: $appMeshBackendBaseUrl")
     http.get(url"$appMeshBackendBaseUrl/status/iteration6")
       .execute[PlatformStatus]
 

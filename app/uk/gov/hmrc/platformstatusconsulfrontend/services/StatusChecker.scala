@@ -81,7 +81,7 @@ class StatusChecker @Inject()(
     if appConfig.iteration3Enabled then
       backendConnector.iteration3Status().recoverWith:
         case ex: Exception =>
-          logger.warn("iteration3Status call to backend service failed.")
+          logger.warn("iteration3Status call to backend service failed.", ex)
           genericError(baseIteration3Status, ex)
     else
       Future.successful(baseIteration3Status.copy(enabled = false))
